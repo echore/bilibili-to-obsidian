@@ -227,15 +227,20 @@ async function handleClip() {
       await deliverTranscript(bvid, title, transcript, settings);
     } else {
       renderProcessing("转录中（约 2 分钟）…");
-      const res = await sendToBackground({
-        type: "CLIP",
-        payload: { bvid, title, config: { ...settings, bvid } },
+      // Whisper transcription takes 2+ minutes — must fetch directly from
+      // content script; MV3 service workers are ephemeral and get terminated
+      // by Chrome before a long-running background fetch can complete.
+      const whisperRes = await fetch("http://localhost:27182/clip", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ bvid, title, config: { ...settings, bvid } }),
       });
-      if (res.data?.success) {
-        renderSuccess(res.data.path);
-        openInObsidian(settings.vault_path, res.data.path);
+      const whisperData = await whisperRes.json();
+      if (whisperData.success) {
+        renderSuccess(whisperData.path);
+        openInObsidian(settings.vault_path, whisperData.path);
       } else {
-        renderError(res.data?.error || "转录失败");
+        renderError(whisperData.error || "转录失败");
       }
     }
   } catch (err) {
