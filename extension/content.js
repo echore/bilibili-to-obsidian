@@ -188,8 +188,7 @@ function renderSuccess(path) {
     `<button id="bili-clipper-reset-btn" style="padding:2px 10px;background:none;` +
     `border:1px solid #16a34a;color:#16a34a;border-radius:4px;font-size:11px;cursor:pointer;">再次 Clip</button>`;
   document.getElementById("bili-clipper-reset-btn").addEventListener("click", () => {
-    _clipBar.style.background = "#f4f0ff";
-    _clipBar.style.borderColor = "#7c3aed";
+    renderLoading();
     loadVideoDataAndRenderIdle();
   });
 }
