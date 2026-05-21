@@ -185,8 +185,13 @@ function renderSuccess(path) {
   _clipBar.style.borderColor = "#16a34a";
   _clipBar.innerHTML =
     `<span style="color:#15803d;">✓ 已存入 ${path}</span>` +
-    `<button onclick="window._biliClipperReset()" style="padding:2px 10px;background:none;` +
+    `<button id="bili-clipper-reset-btn" style="padding:2px 10px;background:none;` +
     `border:1px solid #16a34a;color:#16a34a;border-radius:4px;font-size:11px;cursor:pointer;">再次 Clip</button>`;
+  document.getElementById("bili-clipper-reset-btn").addEventListener("click", () => {
+    _clipBar.style.background = "#f4f0ff";
+    _clipBar.style.borderColor = "#7c3aed";
+    loadVideoDataAndRenderIdle();
+  });
 }
 
 function renderError(message) {
@@ -197,12 +202,6 @@ function renderError(message) {
     `<a href="https://github.com/liyachen/bili-clipper#troubleshooting" ` +
     `target="_blank" style="color:#dc2626;font-size:11px;text-decoration:underline;">查看帮助</a>`;
 }
-
-window._biliClipperReset = function () {
-  _clipBar.style.background = "#f4f0ff";
-  _clipBar.style.borderColor = "#7c3aed";
-  loadVideoDataAndRenderIdle();
-};
 
 // ─── Clip flow ────────────────────────────────────────────────────────────────
 
