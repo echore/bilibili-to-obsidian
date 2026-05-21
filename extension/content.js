@@ -89,6 +89,13 @@ async function getSettings() {
   });
 }
 
+/** Open the clipped note directly in Obsidian using the obsidian:// URI scheme. */
+function openInObsidian(vaultPath, filePath) {
+  const vaultName = vaultPath.replace(/\/$/, "").split("/").pop();
+  const url = `obsidian://open?vault=${encodeURIComponent(vaultName)}&file=${encodeURIComponent(filePath)}`;
+  window.open(url, "_blank");
+}
+
 // ─── Clip Bar UI ─────────────────────────────────────────────────────────────
 
 let _clipBar = null;
@@ -226,8 +233,12 @@ async function handleClip() {
         type: "CLIP",
         payload: { bvid, title, config: { ...settings, bvid } },
       });
-      if (res.data?.success) renderSuccess(res.data.path);
-      else renderError(res.data?.error || "转录失败");
+      if (res.data?.success) {
+        renderSuccess(res.data.path);
+        openInObsidian(settings.vault_path, res.data.path);
+      } else {
+        renderError(res.data?.error || "转录失败");
+      }
     }
   } catch (err) {
     renderError("错误: " + err.message);
@@ -247,8 +258,12 @@ async function deliverTranscript(bvid, title, transcript, settings) {
     type: "CLIP",
     payload: { bvid, title, transcript, config: { ...settings, bvid } },
   });
-  if (res.data?.success) renderSuccess(res.data.path);
-  else renderError(res.data?.error || "写入失败");
+  if (res.data?.success) {
+    renderSuccess(res.data.path);
+    openInObsidian(settings.vault_path, res.data.path);
+  } else {
+    renderError(res.data?.error || "写入失败");
+  }
 }
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
