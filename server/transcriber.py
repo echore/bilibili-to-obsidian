@@ -4,6 +4,7 @@ from pathlib import Path
 from faster_whisper import WhisperModel
 
 _model_cache: dict[str, WhisperModel] = {}
+_model_lock = asyncio.Lock()
 
 
 def get_model(model_name: str = "large-v3-turbo") -> WhisperModel:
@@ -14,7 +15,7 @@ def get_model(model_name: str = "large-v3-turbo") -> WhisperModel:
     return _model_cache[model_name]
 
 
-def transcribe(audio_path: Path, model_name: str = "large-v3-turbo") -> str:
+def _transcribe_sync(audio_path: Path, model_name: str) -> str:
     model = get_model(model_name)
     segments, _info = model.transcribe(
         str(audio_path),
@@ -24,6 +25,10 @@ def transcribe(audio_path: Path, model_name: str = "large-v3-turbo") -> str:
         vad_parameters={"min_silence_duration_ms": 500},
     )
     return "".join(s.text for s in segments)
+
+
+async def transcribe(audio_path: Path, model_name: str = "large-v3-turbo") -> str:
+    return await asyncio.to_thread(_transcribe_sync, audio_path, model_name)
 
 
 async def download_audio(bvid: str) -> Path:

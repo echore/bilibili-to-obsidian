@@ -6,7 +6,6 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "server"))
 
 
 def test_transcribe_joins_segments():
-    """Transcribe should join all segment texts into one string."""
     seg1, seg2 = MagicMock(), MagicMock()
     seg1.text = "大家好"
     seg2.text = "今天分享"
@@ -15,27 +14,25 @@ def test_transcribe_joins_segments():
     mock_model.transcribe.return_value = ([seg1, seg2], MagicMock())
 
     with patch("transcriber.get_model", return_value=mock_model):
-        from transcriber import transcribe
-        result = transcribe(Path("fake.wav"), "large-v3-turbo")
+        from transcriber import _transcribe_sync
+        result = _transcribe_sync(Path("fake.wav"), "large-v3-turbo")
 
     assert result == "大家好今天分享"
 
 
 def test_transcribe_uses_vad_filter():
-    """Transcribe should always pass vad_filter=True."""
     mock_model = MagicMock()
     mock_model.transcribe.return_value = ([], MagicMock())
 
     with patch("transcriber.get_model", return_value=mock_model):
-        from transcriber import transcribe
-        transcribe(Path("fake.wav"), "large-v3-turbo")
+        from transcriber import _transcribe_sync
+        _transcribe_sync(Path("fake.wav"), "large-v3-turbo")
 
     call_kwargs = mock_model.transcribe.call_args[1]
     assert call_kwargs.get("vad_filter") is True
 
 
 def test_get_model_caches():
-    """get_model should return the same instance on repeated calls."""
     import transcriber
     transcriber._model_cache.clear()
 
