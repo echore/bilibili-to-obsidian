@@ -285,15 +285,41 @@ Commit: `3c0d41e` — feat(extension): Clip bar UI + full state machine
 
 ---
 
+## Bugfix — extension 网络分层重构（2026-05-21）
+
+**触发：** E2E 测试时点击 Clip 出现 `⚠ 错误: Failed to fetch`
+
+**根因分析：**
+- `fetchSubtitleText()` 对字幕 CDN（`aisubtitle.hdslb.com` 等）使用了 `credentials: "include"`
+- 字幕文件是公开静态资源，CDN 返回 `Access-Control-Allow-Origin: *`
+- 带 credentials 的请求要求服务端返回具体 origin（不能是 `*`） → 浏览器 CORS 拒绝 → `TypeError: Failed to fetch`
+- 根源错误：Task 7 分析参考 repo 时，把"所有 B站 API 调用需加 credentials"的规则错误套用到了字幕 CDN 上
+
+**架构决策：**
+
+| 层 | 负责内容 |
+|----|---------|
+| `content.js` | B站页面交互（DOM）、bilibili API（`api.bilibili.com`，需要 cookie）、字幕 CDN fetch（公开资源，无需 cookie） |
+| `background.js` | 所有 `localhost:27182` 通信（HEALTH_CHECK、CLIP）|
+
+content → background 通过 `chrome.runtime.sendMessage` 传递类型化消息（`HEALTH_CHECK` / `CLIP`）。server I/O 集中在 background，方便后续维护、重试、日志。
+
+**修改文件：**
+- `extension/content.js`：`fetchViaBackground` → `sendToBackground`；`fetchSubtitleText` 去掉 `credentials`；所有 `/clip` 请求改走 `sendToBackground({type:"CLIP",...})`
+- `extension/background.js`：handler 从通用 `FETCH_SERVER` 改为明确的 `HEALTH_CHECK` + `CLIP`
+
+---
+
 ## 问题汇总
 
 > 遇到的问题在这里统一归档。
 
 | # | Task | 问题描述 | 状态 | 解决方案 |
 |---|------|---------|------|---------|
-| 1 | Task 7 | 计划中 Bilibili subtitle API 端点错误（`v2` vs `wbi/v2`，bvid vs aid） | ✅ 已识别 | 执行时使用 `wbi/v2?aid=&cid=`，加 `credentials:'include'` |
+| 1 | Task 7 | 计划中 Bilibili subtitle API 端点错误（`v2` vs `wbi/v2`，bvid vs aid） | ✅ 已解决 | 执行时使用 `wbi/v2?aid=&cid=`，加 `credentials:'include'` |
 | 2 | Task 4 | yt-dlp 无 fallback，遇 B站限制会挂 | ✅ 已识别 | 加 android/ios 客户端 fallback 策略 |
+| 3 | Bugfix | `fetchSubtitleText` credentials 导致字幕 CDN CORS 失败 | ✅ 已解决 | 去掉 `credentials`；server 通信改走 background service worker |
 
 ---
 
-*最后更新：2026-05-21 · Tasks 1–11 代码全部完成，已打 v0.1.0 标签。E2E 验证待用户手动执行。*
+*最后更新：2026-05-21 · 网络分层重构完成，E2E 验证待重新测试。*

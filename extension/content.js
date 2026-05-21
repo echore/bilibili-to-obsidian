@@ -46,18 +46,29 @@ async function fetchSubtitleText(subtitleUrl) {
     : subtitleUrl.startsWith("//")
     ? "https:" + subtitleUrl
     : subtitleUrl;
-  const res = await fetch(url, { credentials: "include" });
+  const res = await fetch(url);
   const data = await res.json();
   return data.body.map((item) => item.content).join("\n");
 }
 
-/** Ping the local server. Returns true if running. */
+/** Send a typed message to the background service worker and await the response. */
+function sendToBackground(message) {
+  return new Promise((resolve, reject) => {
+    chrome.runtime.sendMessage(message, (response) => {
+      if (chrome.runtime.lastError) {
+        reject(new Error(chrome.runtime.lastError.message));
+      } else {
+        resolve(response);
+      }
+    });
+  });
+}
+
+/** Ping the local server via background. */
 async function isServerRunning() {
   try {
-    const res = await fetch("http://localhost:27182/health", {
-      signal: AbortSignal.timeout(2000),
-    });
-    return res.ok;
+    const res = await sendToBackground({ type: "HEALTH_CHECK" });
+    return !!(res && res.ok);
   } catch {
     return false;
   }
@@ -211,18 +222,12 @@ async function handleClip() {
       await deliverTranscript(bvid, title, transcript, settings);
     } else {
       renderProcessing("转录中（约 2 分钟）…");
-      const res = await fetch("http://localhost:27182/clip", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          bvid,
-          title,
-          config: { ...settings, bvid },
-        }),
+      const res = await sendToBackground({
+        type: "CLIP",
+        payload: { bvid, title, config: { ...settings, bvid } },
       });
-      const result = await res.json();
-      if (result.success) renderSuccess(result.path);
-      else renderError(result.error || "转录失败");
+      if (res.data?.success) renderSuccess(res.data.path);
+      else renderError(res.data?.error || "转录失败");
     }
   } catch (err) {
     renderError("错误: " + err.message);
@@ -238,14 +243,12 @@ async function deliverTranscript(bvid, title, transcript, settings) {
     return;
   }
 
-  const res = await fetch("http://localhost:27182/clip", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ bvid, title, transcript, config: { ...settings, bvid } }),
+  const res = await sendToBackground({
+    type: "CLIP",
+    payload: { bvid, title, transcript, config: { ...settings, bvid } },
   });
-  const result = await res.json();
-  if (result.success) renderSuccess(result.path);
-  else renderError(result.error || "写入失败");
+  if (res.data?.success) renderSuccess(res.data.path);
+  else renderError(res.data?.error || "写入失败");
 }
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
