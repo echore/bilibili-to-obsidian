@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Bili Clipper",
+  "version": "0.1.0",
+  "description": "Clip Bilibili video transcripts to Obsidian",
+  "permissions": ["storage", "clipboardWrite"],
+  "host_permissions": [
+    "https://www.bilibili.com/*",
+    "https://api.bilibili.com/*",
+    "http://localhost:27182/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.bilibili.com/video/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  }
+}
