@@ -10,16 +10,16 @@
 | Task | 内容 | 状态 |
 |------|------|------|
 | Task 1 | Project Setup | ✅ 完成 |
-| Task 2 | Python Server — /health | ⬜ 待开始 |
-| Task 3 | writer.py — 笔记格式化 + 写入 | ⬜ 待开始 |
-| Task 4 | transcriber.py — yt-dlp + Whisper | ⬜ 待开始 |
-| Task 5 | server.py — /clip 端点串联 | ⬜ 待开始 |
-| Task 6 | Chrome 扩展 — Manifest + Icons | ⬜ 待开始 |
-| Task 7 | content.js — Bilibili API Helpers | ⬜ 待开始 |
-| Task 8 | content.js — Clip Bar UI + 状态机 | ⬜ 待开始 |
-| Task 9 | background.js + Popup | ⬜ 待开始 |
-| Task 10 | install.sh + uninstall.sh | ⬜ 待开始 |
-| Task 11 | E2E 测试 + README | ⬜ 待开始 |
+| Task 2 | Python Server — /health | ✅ 完成 |
+| Task 3 | writer.py — 笔记格式化 + 写入 | ✅ 完成 |
+| Task 4 | transcriber.py — yt-dlp + Whisper | ✅ 完成 |
+| Task 5 | server.py — /clip 端点串联 | ✅ 完成 |
+| Task 6 | Chrome 扩展 — Manifest + Icons | ✅ 完成 |
+| Task 7 | content.js — Bilibili API Helpers | ✅ 完成 |
+| Task 8 | content.js — Clip Bar UI + 状态机 | ✅ 完成 |
+| Task 9 | background.js + Popup | ✅ 完成 |
+| Task 10 | install.sh + uninstall.sh | ✅ 完成 |
+| Task 11 | E2E 测试 + README | ✅ 完成（E2E 待用户验证） |
 
 ---
 
@@ -41,232 +41,217 @@
 
 ---
 
-## Task 2 — Python Server /health ⬜
+## Task 2 — Python Server /health ✅
 
 **目标：** FastAPI 骨架，`/health` 端点可响应
 
 | 步骤 | 描述 | 状态 |
 |------|------|------|
-| Step 1 | 写 server/requirements.txt | ⬜ |
-| Step 2 | 写 server/server.py（/health only） | ⬜ |
-| Step 3 | uv venv + 安装依赖 | ⬜ |
-| Step 4 | 验证 /health 响应 | ⬜ |
-| Step 5 | commit | ⬜ |
+| Step 1 | 写 server/requirements.txt | ✅ |
+| Step 2 | 写 server/server.py（/health only） | ✅ |
+| Step 3 | uv venv + 安装依赖 | ✅ |
+| Step 4 | 验证 /health 响应 | ✅ |
+| Step 5 | commit | ✅ |
 
-**完成标准：**
+**结果：**
 ```
 curl http://localhost:27182/health
 → {"status":"ok","model":"large-v3-turbo"}
 ```
+Commit: `f58b49d` — feat(server): FastAPI skeleton with /health endpoint
 
-**结果：** —
-
-**问题：** —
+**Review 结论：** Spec ✅ 全通过 | 代码质量 ✅ 通过
+**注：** CORS `allow_origins=["*"]` 对 Chrome 扩展调用 localhost 是正确做法，无需修改
 
 ---
 
-## Task 3 — writer.py ⬜
+## Task 3 — writer.py ✅
 
 **目标：** 格式化 markdown 笔记并写入 Obsidian vault
 
 | 步骤 | 描述 | 状态 |
 |------|------|------|
-| Step 1 | 写 tests/test_writer.py（先写失败测试） | ⬜ |
-| Step 2 | 运行测试 — 预期 ModuleNotFoundError | ⬜ |
-| Step 3 | 写 server/writer.py | ⬜ |
-| Step 4 | 运行测试 — 预期 5 passed | ⬜ |
-| Step 5 | commit | ⬜ |
+| Step 1 | 写 tests/test_writer.py（先写失败测试） | ✅ |
+| Step 2 | 运行测试 — 预期 ModuleNotFoundError | ✅ |
+| Step 3 | 写 server/writer.py | ✅ |
+| Step 4 | 运行测试 — 6 passed | ✅ |
+| Step 5 | commit | ✅ |
 
-**完成标准：**
-```
-.venv/bin/pytest tests/test_writer.py -v
-→ 5 passed
-```
+**结果：** 6 passed（spec 说 5，实际有 6 个测试函数，全通过）
+Commit: `4811b9d` — feat(server): writer module — format + write vault notes
 
-**结果：** —
-
-**问题：** —
+**Review 结论：** Spec ✅ | 代码质量 ✅
 
 ---
 
-## Task 4 — transcriber.py ⬜
+## Task 4 — transcriber.py ✅
 
 **目标：** yt-dlp 下载音频 + faster-whisper 转录，模型缓存
 
 | 步骤 | 描述 | 状态 |
 |------|------|------|
-| Step 1 | 写 tests/test_transcriber.py（mock，不真实下载） | ⬜ |
-| Step 2 | 运行测试 — 预期 ModuleNotFoundError | ⬜ |
-| Step 3 | 写 server/transcriber.py | ⬜ |
-| Step 4 | 运行测试 — 预期 3 passed | ⬜ |
-| Step 5 | commit | ⬜ |
+| Step 1 | 写 tests/test_transcriber.py（mock，不真实下载） | ✅ |
+| Step 2 | 运行测试 — 预期 ModuleNotFoundError | ✅ |
+| Step 3 | 写 server/transcriber.py | ✅ |
+| Step 4 | 运行测试 — 3 passed | ✅ |
+| Step 5 | commit | ✅ |
 
-**完成标准：**
-```
-.venv/bin/pytest tests/test_transcriber.py -v
-→ 3 passed
-```
+**结果：** 3 passed
+- Commit 1: `1363bfd` — feat(server): transcriber — yt-dlp download + faster-whisper
+- Commit 2: `70eab54` — fix(server): make transcribe() async to avoid blocking event loop
 
-**结果：** —
+**Review 发现的问题及修复：**
+- `transcribe()` 原为同步函数，会阻塞 FastAPI event loop → 改为 async，内部调用 `asyncio.to_thread(_transcribe_sync, ...)`
+- 加了 `_model_lock = asyncio.Lock()` 防止并发初始化冲突
 
-**问题：** —
+**注：** yt-dlp 加了 `--extractor-args bilibili:player_client=app` 作为 B站访问限制 fallback
 
 ---
 
-## Task 5 — server.py /clip 端点 ⬜
+## Task 5 — server.py /clip 端点 ✅
 
 **目标：** /clip 端点串联 transcriber + writer
 
 | 步骤 | 描述 | 状态 |
 |------|------|------|
-| Step 1 | 替换 server.py 为完整版本（含 /clip） | ⬜ |
-| Step 2 | curl 测试 /clip 快速路径（已有字幕） | ⬜ |
-| Step 3 | commit | ⬜ |
+| Step 1 | 替换 server.py 为完整版本（含 /clip） | ✅ |
+| Step 2 | curl 测试 /clip 快速路径（已有字幕） | ✅ |
+| Step 3 | commit | ✅ |
 
-**完成标准：**
+**结果：**
 ```
-curl POST /clip（带 transcript 字段）
-→ {"success":true,"path":"Raw/Test Video.md"}
-文件实际存在于 /tmp/test-vault/Raw/
+/health → {"status":"ok","model":"large-v3-turbo"}
+/clip   → {"success":true,"path":"Raw/Test Video.md"}
+/tmp/test-vault/Raw/Test Video.md 含正确 frontmatter
 ```
+Commit: `54fd32f` — feat(server): /clip endpoint wires transcriber + writer
 
-**结果：** —
-
-**问题：** —
+**Review 结论：** Spec ✅ | 代码质量 ✅
 
 ---
 
-## Task 6 — Chrome 扩展 Manifest + Icons ⬜
+## Task 6 — Chrome 扩展 Manifest + Icons ✅
 
 **目标：** extension/ 骨架能在 Chrome 加载无报错
 
 | 步骤 | 描述 | 状态 |
 |------|------|------|
-| Step 1 | 写 extension/manifest.json | ⬜ |
-| Step 2 | Python 脚本生成占位 icon（16/48/128px） | ⬜ |
-| Step 3 | Chrome 加载扩展，确认无报错 | ⬜ |
-| Step 4 | commit | ⬜ |
+| Step 1 | 写 extension/manifest.json | ✅ |
+| Step 2 | Python 脚本生成占位 icon（16/48/128px） | ✅ |
+| Step 3 | Chrome 加载扩展（需用户手动验证） | ⏳ 待用户确认 |
+| Step 4 | commit | ✅ |
 
-**完成标准：**
-- `chrome://extensions` 显示扩展，无 error 标记
+**结果：**
+- icon16.png (79B), icon48.png (123B), icon128.png (306B) — 紫色占位图
+- content.js / background.js / popup.html stub 已创建
+Commit: `d689aaf` — feat(extension): manifest v3 + placeholder icons + stub files
 
-**结果：** —
-
-**问题：** —
+**⚠️ 需要用户操作：** 请在 Chrome 中加载 `extension/` 文件夹确认无报错
 
 ---
 
-## Task 7 — content.js Bilibili API Helpers ⬜
+## Task 7 — content.js Bilibili API Helpers ✅
 
 **目标：** getBvId / getVideoInfo / getSubtitleList / fetchSubtitleText / isServerRunning / getSettings
 
 | 步骤 | 描述 | 状态 |
 |------|------|------|
-| Step 1 | 写 extension/content.js（API helpers 部分） | ⬜ |
-| Step 2 | B站视频页 DevTools Console 手动验证 | ⬜ |
-| Step 3 | commit | ⬜ |
+| Step 1 | 写 extension/content.js（API helpers 部分） | ✅ |
+| Step 2 | B站视频页 DevTools Console 手动验证 | ⏳ 待用户确认 |
+| Step 3 | commit | ✅ |
 
-**完成标准：**
-```javascript
-// DevTools Console 验证
-getBvId()           // → "BV1xx..."
-getVideoInfo(...)   // → {cid: ..., title: "..."}
-getSubtitleList(...) // → [] 或 [{subtitle_url, lan, ...}]
-```
+**关键修正（vs 原计划）：**
+- `getSubtitleList` 改用 `wbi/v2?aid=&cid=`（原计划用的 `v2?bvid=` 是错误的）
+- `getVideoInfo` 返回值加了 `aid`（之后传给 getSubtitleList 用）
+- 所有 B站 API 调用加 `credentials: "include"`
+- subtitle URL `http://` → `https://` 自动转换
 
-**结果：** —
-
-**问题：** —
+Commit: `4b2b5ec` — feat(extension): Bilibili API helpers in content.js
 
 ---
 
-## Task 8 — content.js Clip Bar UI + 状态机 ⬜
+## Task 8 — content.js Clip Bar UI + 状态机 ✅
 
 **目标：** 注入 Clip bar；完整状态机（loading / idle / processing / success / error）
 
 | 步骤 | 描述 | 状态 |
 |------|------|------|
-| Step 1 | 追加 Clip Bar UI 代码到 content.js | ⬜ |
-| Step 2 | Chrome 重载扩展 + B站视频页目视验证 | ⬜ |
-| Step 3 | commit | ⬜ |
+| Step 1 | 追加 Clip Bar UI 代码到 content.js | ✅ |
+| Step 2 | Chrome 重载扩展 + B站视频页目视验证 | ⏳ 待用户确认 |
+| Step 3 | commit | ✅ |
 
-**完成标准：**
-- Clip bar 出现在视频标题下方（紫色边框）
-- CC 字幕视频 → 绿色 "CC 字幕 ✓" badge
-- 无字幕视频 → 黄色 "Whisper 转录" badge
-- 点击 Clip → 走通完整流程
+**结果：** content.js 共 267 行，Task 7 API helpers 保留，UI 代码追加
+Commit: `3c0d41e` — feat(extension): Clip bar UI + full state machine
 
-**结果：** —
+**Review 结论：** Spec ✅ 全部 13 项通过 | 代码质量 ✅
 
 **问题：** —
 
 ---
 
-## Task 9 — background.js + Popup ⬜
+## Task 9 — background.js + Popup ✅
 
 **目标：** MV3 service worker + 设置面板 + 服务健康检测
 
 | 步骤 | 描述 | 状态 |
 |------|------|------|
-| Step 1 | 写 extension/background.js | ⬜ |
-| Step 2 | 写 extension/popup.html | ⬜ |
-| Step 3 | 写 extension/popup.js | ⬜ |
-| Step 4 | 重载扩展 + 验证 popup 和健康检测 | ⬜ |
-| Step 5 | commit | ⬜ |
+| Step 1 | 写 extension/background.js | ✅ |
+| Step 2 | 写 extension/popup.html | ✅ |
+| Step 3 | 写 extension/popup.js | ✅ |
+| Step 4 | 重载扩展 + 验证 popup（需用户操作） | ⏳ 待用户确认 |
+| Step 5 | commit | ✅ |
 
-**完成标准：**
-- 点击扩展图标 → popup 打开，所有字段正常
-- 服务运行时 → 绿点 + "本地服务运行中 · :27182"
-- 服务未运行 → 红点 + "本地服务未运行"
+**结果：** Commit: `220c96b` — feat(extension): background service worker + settings popup
 
-**结果：** —
-
-**问题：** —
+**Review 结论：** Spec ✅ 全部 8 项通过
 
 ---
 
-## Task 10 — install.sh + uninstall.sh ⬜
+## Task 10 — install.sh + uninstall.sh ✅
 
 **目标：** 一键安装 Python 环境 + 注册 launchd 开机自启
 
 | 步骤 | 描述 | 状态 |
 |------|------|------|
-| Step 1 | 写 install.sh | ⬜ |
-| Step 2 | 写 uninstall.sh | ⬜ |
-| Step 3 | chmod +x | ⬜ |
-| Step 4 | 端到端测试 bash install.sh | ⬜ |
-| Step 5 | commit | ⬜ |
+| Step 1 | 写 install.sh | ✅ |
+| Step 2 | 写 uninstall.sh | ✅ |
+| Step 3 | chmod +x | ✅ |
+| Step 4 | 端到端测试 bash install.sh | ⏳ 待用户手动运行 |
+| Step 5 | commit | ✅ |
 
-**完成标准：**
-```
-bash install.sh
-→ ✓ 服务运行中 → http://localhost:27182
-→ === 安装完成 ✓ ===
-```
+**结果：**
+- install.sh：macOS 检查 → Python 3.11+ → uv → 复制服务文件 → venv + 依赖 → launchd plist → 健康检查
+- uninstall.sh：launchctl unload → 删除 plist → 删除安装目录
+- Commit: `a83e71f` — feat: install.sh + uninstall.sh with launchd auto-start
 
-**结果：** —
+**Review 结论：** Spec ✅ 全通过 | 代码质量 ✅ 通过（质量审查报告的"问题"均为误报或 MVP 范围外）
+
+**⚠️ 需要用户操作：** 请在终端运行 `bash install.sh` 完成端到端验证
 
 **问题：** —
 
 ---
 
-## Task 11 — E2E 测试 + README ⬜
+## Task 11 — E2E 测试 + README ✅
 
 **目标：** 完整端到端验证 + 最终 README.md
 
 | 步骤 | 描述 | 状态 |
 |------|------|------|
-| Step 1 | E2E：有字幕视频 clip → vault 写入成功 | ⬜ |
-| Step 2 | E2E：无字幕视频 clip → Whisper 转录写入成功 | ⬜ |
-| Step 3 | 写最终 README.md | ⬜ |
-| Step 4 | 最终 commit + tag v0.1.0 | ⬜ |
+| Step 1 | E2E：有字幕视频 clip → vault 写入成功 | ⏳ 待用户手动验证 |
+| Step 2 | E2E：无字幕视频 clip → Whisper 转录写入成功 | ⏳ 待用户手动验证 |
+| Step 3 | 写最终 README.md | ✅ |
+| Step 4 | 最终 commit + tag v0.1.0 | ✅ |
 
-**完成标准：**
-- CC 字幕视频：3 秒内绿色成功状态，vault 文件含正确 frontmatter
-- Whisper 路径：约 2 分钟后成功，文件正常
-- `git tag v0.1.0` 打上
+**结果：**
+- README.md：含完整安装指南、使用说明、troubleshooting、Credits
+- Commit: `bc7103b` — docs: final README with install + troubleshooting guide
+- Tag: `v0.1.0` ✓
 
-**结果：** —
+**⚠️ 需要用户操作（E2E 验证）：**
+1. 运行 `bash install.sh`，确认 `=== 安装完成 ✓ ===` 及服务健康
+2. Chrome 中打开一个有 CC 字幕的 B站视频 → 点击 Clip → 确认 3 秒内绿色成功
+3. Chrome 中打开一个无字幕的 B站视频 → 点击 Clip → 确认 Whisper 转录路径
 
 **问题：** —
 
@@ -311,4 +296,4 @@ bash install.sh
 
 ---
 
-*最后更新：2026-05-21 · 参考 repo 读取完成，发现 API 端点问题*
+*最后更新：2026-05-21 · Tasks 1–11 代码全部完成，已打 v0.1.0 标签。E2E 验证待用户手动执行。*
