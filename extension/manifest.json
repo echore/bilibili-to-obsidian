@@ -6,8 +6,7 @@
   "permissions": ["storage", "clipboardWrite"],
   "host_permissions": [
     "https://www.bilibili.com/*",
-    "https://api.bilibili.com/*",
-    "http://localhost:27182/*"
+    "https://api.bilibili.com/*"
   ],
   "background": {
     "service_worker": "background.js"
