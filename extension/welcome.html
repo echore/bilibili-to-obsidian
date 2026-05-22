@@ -206,19 +206,40 @@
         配置你的 Obsidian Vault
       </div>
 
-      <p style="font-size:13px;color:#374151;margin-bottom:4px;">
-        打开 Obsidian，在左下角找到你的 <strong>Vault 名称</strong>：
+      <p style="font-size:13px;color:#374151;margin-bottom:12px;">
+        按以下两步找到你的 <strong>Vault 名称</strong>：
       </p>
-      <div style="margin:12px 0 6px;position:relative;display:inline-block;">
-        <img src="assets/obsidian-vault-hint.png" alt="Obsidian 左下角 vault 名称示意"
-          style="width:240px;border-radius:8px;border:1px solid #e5e7eb;display:block;">
-        <div style="position:absolute;top:50%;left:-90px;transform:translateY(-50%);
-          background:#7c3aed;color:white;padding:3px 10px;border-radius:5px;
-          font-size:11px;font-weight:600;white-space:nowrap;">
-          在这里找 →
+
+      <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px;">
+        <!-- Sub-step 1 -->
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <div style="background:#7c3aed;color:white;width:20px;height:20px;border-radius:50%;
+            display:flex;align-items:center;justify-content:center;font-size:11px;
+            font-weight:700;flex-shrink:0;margin-top:2px;">1</div>
+          <div>
+            <p style="font-size:12px;color:#374151;margin-bottom:6px;">
+              打开 Obsidian，查看<strong>左下角</strong>的 Vault 按钮（红框位置）
+            </p>
+            <img src="assets/vault-step1.png" alt="Obsidian 左下角 vault 按钮"
+              style="width:260px;border-radius:6px;border:1px solid #e5e7eb;display:block;">
+          </div>
+        </div>
+
+        <!-- Sub-step 2 -->
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <div style="background:#7c3aed;color:white;width:20px;height:20px;border-radius:50%;
+            display:flex;align-items:center;justify-content:center;font-size:11px;
+            font-weight:700;flex-shrink:0;margin-top:2px;">2</div>
+          <div>
+            <p style="font-size:12px;color:#374151;margin-bottom:6px;">
+              点击它，弹出的蓝色高亮名称就是你的 Vault 名称。<br>
+              Obsidian 默认是 <strong>"Obsidian Vault"</strong>，如果你改过就是你自己设定的名字。
+            </p>
+            <img src="assets/vault-step2.png" alt="点击后显示 vault 名称"
+              style="width:260px;border-radius:6px;border:1px solid #e5e7eb;display:block;">
+          </div>
         </div>
       </div>
-      <p class="hint">Obsidian 左下角显示的名称，默认是 "Obsidian Vault"</p>
 
       <label for="vault_name">Vault 名称 <span style="color:#ef4444;">*</span></label>
       <input type="text" id="vault_name" placeholder="例如：Obsidian Vault">
