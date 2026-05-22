@@ -9,9 +9,13 @@
     .row { margin-bottom: 14px; }
     label { display: block; font-size: 10px; font-weight: 700; text-transform: uppercase;
             letter-spacing: 0.05em; color: #6b7280; margin-bottom: 5px; }
+    .input-row { display: flex; gap: 4px; }
     input, select { width: 100%; padding: 6px 8px; border: 1px solid #d1d5db; border-radius: 6px;
                     font-size: 12px; color: #111; }
     input:focus, select:focus { outline: 2px solid #7c3aed; border-color: transparent; }
+    .btn-auto { padding: 6px 8px; background: #f3f4f6; border: 1px solid #d1d5db; border-radius: 6px;
+                font-size: 11px; color: #374151; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+    .btn-auto:hover { background: #e5e7eb; }
     .seg { display: flex; gap: 4px; }
     .seg button { flex: 1; padding: 5px 2px; border: 1px solid #d1d5db; border-radius: 6px;
                   cursor: pointer; background: white; font-size: 11px; color: #374151; }
@@ -27,8 +31,11 @@
   <h2><span>📎</span> Bili Clipper</h2>
 
   <div class="row">
-    <label>Obsidian API Key</label>
-    <input type="password" id="obsidian_api_key" placeholder="从 Obsidian Local REST API 插件复制">
+    <label>Vault 名称</label>
+    <div class="input-row">
+      <input type="text" id="vault_name" placeholder="Obsidian Vault">
+      <button class="btn-auto" id="btn-detect">自动检测</button>
+    </div>
   </div>
 
   <div class="row">
