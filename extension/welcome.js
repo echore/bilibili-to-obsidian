@@ -24,7 +24,6 @@ chrome.storage.local.get(
     document.querySelectorAll("#output-seg button").forEach((btn) => {
       btn.classList.toggle("active", btn.dataset.value === s.output);
     });
-    if (s.vault_name) updateVaultPreview(s.vault_name);
   }
 );
 
@@ -41,12 +40,13 @@ document.querySelectorAll("#output-seg button").forEach((btn) => {
 
 // ── 保存设置 ───────────────────────────────────────────────────────────────────
 document.getElementById("save-btn").addEventListener("click", () => {
-  const vault_name = vaultInput.value.trim();
+  const vault_name = document.getElementById("vault_name").value.trim();
   const folder = document.getElementById("folder").value.trim();
   const output =
     document.querySelector("#output-seg button.active")?.dataset.value ?? "obsidian";
 
   if (!vault_name) {
+    const vaultInput = document.getElementById("vault_name");
     vaultInput.focus();
     vaultInput.style.borderColor = "#ef4444";
     vaultInput.style.boxShadow = "0 0 0 3px rgba(239,68,68,0.15)";
