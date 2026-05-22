@@ -286,11 +286,14 @@ function renderProcessing(message) {
     `<span style="color:#4c1d95;">${message}</span></div>`;
 }
 
-function renderSuccess(message) {
+function renderSuccess(message, subtitle = "") {
   _clipBar.style.background = "#f0fdf4";
   _clipBar.style.borderColor = "#16a34a";
+  const subtitleHtml = subtitle
+    ? `<div style="color:#6b7280;font-size:11px;margin-top:2px;">${subtitle}</div>`
+    : "";
   _clipBar.innerHTML =
-    `<span style="color:#15803d;">✓ ${message}</span>` +
+    `<div><span style="color:#15803d;">✓ ${message}</span>${subtitleHtml}</div>` +
     `<button id="bili-clipper-reset-btn" style="padding:2px 10px;background:none;` +
     `border:1px solid #16a34a;color:#16a34a;border-radius:4px;font-size:11px;cursor:pointer;">再次 Clip</button>`;
   document.getElementById("bili-clipper-reset-btn").addEventListener("click", () => {
@@ -350,7 +353,7 @@ async function handleClip() {
     if (settings.output === "clipboard") {
       renderSuccess("已复制到剪贴板");
     } else {
-      renderSuccess("已保存到 Obsidian");
+      renderSuccess("已保存到 Obsidian", "如未自动打开，请先启动 Obsidian 再重试");
     }
   } catch (err) {
     renderError("错误: " + err.message);
