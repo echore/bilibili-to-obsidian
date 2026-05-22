@@ -30,7 +30,7 @@ function save() {
 }
 
 ["vault_name", "folder"].forEach((id) =>
-  document.getElementById(id).addEventListener("change", save)
+  document.getElementById(id).addEventListener("input", save)
 );
 
 document.querySelectorAll("#output-seg button").forEach((btn) => {
