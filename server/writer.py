@@ -1,4 +1,3 @@
-# server/writer.py  — replace entire file
 from datetime import date
 
 
@@ -10,9 +9,10 @@ def format_note(title: str, transcript: str, config: dict, method: str) -> str:
     """
     bvid = config.get("bvid", "")
     source_url = f"https://www.bilibili.com/video/{bvid}" if bvid else ""
+    safe_title = title.replace('"', '\\"')
 
     return f"""---
-title: {title}
+title: "{safe_title}"
 source: {source_url}
 platform: bilibili
 date: {date.today().isoformat()}
