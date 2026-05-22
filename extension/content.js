@@ -290,16 +290,10 @@ function renderSuccess(message, subtitle = "") {
   _clipBar.style.background = "#f0fdf4";
   _clipBar.style.borderColor = "#16a34a";
   const subtitleHtml = subtitle
-    ? `<div style="color:#6b7280;font-size:11px;margin-top:2px;">${subtitle}</div>`
+    ? `<span style="color:#6b7280;font-size:11px;">${subtitle}</span>`
     : "";
   _clipBar.innerHTML =
-    `<div><span style="color:#15803d;">✓ ${message}</span>${subtitleHtml}</div>` +
-    `<button id="bili-clipper-reset-btn" style="padding:2px 10px;background:none;` +
-    `border:1px solid #16a34a;color:#16a34a;border-radius:4px;font-size:11px;cursor:pointer;">再次 Clip</button>`;
-  document.getElementById("bili-clipper-reset-btn").addEventListener("click", () => {
-    renderLoading();
-    loadVideoDataAndRenderIdle();
-  });
+    `<span style="color:#15803d;">✓ ${message}</span>` + subtitleHtml;
 }
 
 function renderError(message) {
