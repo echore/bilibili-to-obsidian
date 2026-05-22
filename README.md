@@ -25,7 +25,7 @@ Chrome 扩展，点一下，B 站视频字幕自动进 Obsidian，2 秒完成。
 
 ## 配置
 
-点击 Chrome 工具栏中的 Bili Clipper 图标，填写：
+安装后会自动弹出设置引导页，按提示填写即可。也可以随时点击 Chrome 工具栏中的 Bili Clipper 图标打开设置，填写：
 
 - **Vault 名称** — Obsidian 标题栏显示的文件夹名称（例如 `Obsidian Vault`）
 - **目标文件夹** — Vault 内保存笔记的子文件夹（留空则保存到 Vault 根目录）
