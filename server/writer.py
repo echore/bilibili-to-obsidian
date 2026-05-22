@@ -11,7 +11,7 @@ def sanitize_filename(title: str) -> str:
 
 
 async def write_note(title: str, transcript: str, config: dict, method: str) -> str:
-    obsidian_url = config.get("obsidian_url", "https://127.0.0.1:27123").rstrip("/")
+    obsidian_url = config.get("obsidian_url", "https://127.0.0.1:27124").rstrip("/")
     api_key = config.get("obsidian_api_key", "")
     folder = config.get("folder", "Raw")
     bvid = config.get("bvid", "")

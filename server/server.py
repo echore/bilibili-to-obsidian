@@ -20,7 +20,7 @@ app.add_middleware(
 
 
 class Config(BaseModel):
-    obsidian_url: str = "https://127.0.0.1:27123"
+    obsidian_url: str = "https://127.0.0.1:27124"
     obsidian_api_key: str = ""
     folder: str = "Raw"
     output: str = "obsidian"
@@ -37,7 +37,7 @@ class ClipRequest(BaseModel):
 
 class OpenRequest(BaseModel):
     path: str
-    obsidian_url: str = "https://127.0.0.1:27123"
+    obsidian_url: str = "https://127.0.0.1:27124"
     obsidian_api_key: str = ""
 
 

@@ -79,21 +79,11 @@ async function getSettings() {
   });
 }
 
-/** Open the clipped note directly in Obsidian using the obsidian:// URI scheme. */
-async function openInObsidian(filePath, settings) {
-  try {
-    await fetch("http://localhost:27182/open", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        path: filePath,
-        obsidian_url: "https://127.0.0.1:27123",
-        obsidian_api_key: settings.obsidian_api_key || "",
-      }),
-    });
-  } catch {
-    // Non-critical: note is already saved even if open fails
-  }
+/** Open the clipped note in Obsidian — triggers Chrome's native "Open Obsidian?" dialog. */
+function openInObsidian(filePath, settings) {
+  const link = document.createElement("a");
+  link.href = "obsidian://open?file=" + encodeURIComponent(filePath);
+  link.click();
 }
 
 // ─── Clip Bar UI ─────────────────────────────────────────────────────────────
@@ -237,8 +227,8 @@ async function handleClip() {
       });
       const whisperData = await whisperRes.json();
       if (whisperData.success) {
+        openInObsidian(whisperData.path, settings);
         renderSuccess(whisperData.path);
-        await openInObsidian(whisperData.path, settings);
       } else {
         renderError(whisperData.error || "转录失败");
       }
@@ -264,8 +254,8 @@ async function deliverTranscript(bvid, title, transcript, settings) {
   });
   const data = await res.json();
   if (data.success) {
+    openInObsidian(data.path, settings);
     renderSuccess(data.path);
-    await openInObsidian(data.path, settings);
   } else {
     renderError(data.error || "写入失败");
   }

@@ -1,13 +1,31 @@
 import asyncio
+import sys
 import tempfile
 from pathlib import Path
-from faster_whisper import WhisperModel
+import mlx_whisper
 
-# launchd doesn't inherit the user's PATH, so resolve tools by absolute path
-_YTDLP = Path(__file__).parent / ".venv" / "bin" / "yt-dlp"
+# Derive yt-dlp from the running Python's venv bin dir — works regardless
+# of where server.py lives (repo vs install dir).
+_YTDLP = Path(sys.executable).parent / "yt-dlp"
 
-# ffmpeg is a system tool (Homebrew); search common locations as a fallback
-# even when PATH is set correctly in the plist
+_DEFAULT_MODEL = "mlx-community/whisper-large-v3-turbo"
+
+# Map user-facing short names to mlx-community HuggingFace repo paths.
+# Extension sends short names; server resolves to backend-specific paths.
+# Only update here when switching backends or adding models.
+_MODEL_ALIASES: dict[str, str] = {
+    "large-v3-turbo": "mlx-community/whisper-large-v3-turbo",
+    "large-v3":       "mlx-community/whisper-large-v3",
+    "medium":         "mlx-community/whisper-medium-mlx",
+    "small":          "mlx-community/whisper-small-mlx",
+    "base":           "mlx-community/whisper-base-mlx",
+}
+
+
+def _resolve_model(name: str) -> str:
+    return _MODEL_ALIASES.get(name, name)
+
+
 def _find_ffmpeg() -> Path | None:
     for candidate in [
         Path("/opt/homebrew/bin/ffmpeg"),  # Apple Silicon Homebrew
@@ -18,34 +36,22 @@ def _find_ffmpeg() -> Path | None:
             return candidate
     return None
 
+
 _FFMPEG = _find_ffmpeg()
-
-_model_cache: dict[str, WhisperModel] = {}
-_model_lock = asyncio.Lock()
-
-
-def get_model(model_name: str = "large-v3-turbo") -> WhisperModel:
-    if model_name not in _model_cache:
-        _model_cache[model_name] = WhisperModel(
-            model_name, device="auto", compute_type="auto"
-        )
-    return _model_cache[model_name]
 
 
 def _transcribe_sync(audio_path: Path, model_name: str) -> str:
-    model = get_model(model_name)
-    segments, _info = model.transcribe(
+    result = mlx_whisper.transcribe(
         str(audio_path),
+        path_or_hf_repo=model_name,
         language="zh",
-        beam_size=5,
-        vad_filter=True,
-        vad_parameters={"min_silence_duration_ms": 500},
+        no_speech_threshold=0.6,
     )
-    return "".join(s.text for s in segments)
+    return result["text"]
 
 
-async def transcribe(audio_path: Path, model_name: str = "large-v3-turbo") -> str:
-    return await asyncio.to_thread(_transcribe_sync, audio_path, model_name)
+async def transcribe(audio_path: Path, model_name: str = _DEFAULT_MODEL) -> str:
+    return await asyncio.to_thread(_transcribe_sync, audio_path, _resolve_model(model_name))
 
 
 async def download_audio(bvid: str) -> Path:
