@@ -42,3 +42,19 @@ document.getElementById("open-welcome").addEventListener("click", (e) => {
   chrome.tabs.create({ url: chrome.runtime.getURL("welcome.html") });
 });
 
+// ─── Clip history ─────────────────────────────────────────────────────────────
+
+chrome.storage.local.get({ clip_history: [] }, ({ clip_history }) => {
+  const container = document.getElementById("history-list");
+  if (clip_history.length === 0) {
+    container.innerHTML = `<span class="history-empty">还没有 Clip 记录</span>`;
+    return;
+  }
+  container.innerHTML = clip_history.map(({ title, url, time }) => {
+    const date = new Date(time).toLocaleDateString("zh-CN", { month: "numeric", day: "numeric" });
+    return `<a class="history-item" href="${url}" target="_blank">
+      ${title}<span class="date">${date}</span>
+    </a>`;
+  }).join("");
+});
+

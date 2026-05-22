@@ -189,6 +189,16 @@ async function clipToObsidian(noteContent, title, settings) {
   link.click();
 }
 
+// ─── Clip history ────────────────────────────────────────────────────────────
+
+function saveClipHistory({ title, url }) {
+  chrome.storage.local.get({ clip_history: [] }, ({ clip_history }) => {
+    const entry = { title, url, time: Date.now() };
+    const updated = [entry, ...clip_history.filter((e) => e.url !== url)].slice(0, 20);
+    chrome.storage.local.set({ clip_history: updated });
+  });
+}
+
 // ─── Clip Bar UI ─────────────────────────────────────────────────────────────
 
 let _clipBar = null;
@@ -349,6 +359,7 @@ async function handleClip() {
     } else {
       renderSuccess("已保存到 Obsidian", "如未自动打开，请先启动 Obsidian 再重试");
     }
+    saveClipHistory({ title, url: `https://www.bilibili.com/video/${bvid}` });
   } catch (err) {
     renderError("错误: " + err.message);
   } finally {

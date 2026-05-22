@@ -16,6 +16,16 @@
     .seg button { flex: 1; padding: 5px 2px; border: 1px solid #d1d5db; border-radius: 6px;
                   cursor: pointer; background: white; font-size: 11px; color: #374151; }
     .seg button.active { background: #7c3aed; color: white; border-color: #7c3aed; }
+    .history-section { margin-top: 14px; padding-top: 12px; border-top: 1px solid #f3f4f6; }
+    .history-section h3 { font-size: 10px; font-weight: 700; text-transform: uppercase;
+                          letter-spacing: 0.05em; color: #6b7280; margin-bottom: 8px; }
+    .history-list { max-height: 150px; overflow-y: auto; }
+    .history-item { display: block; padding: 5px 0; border-bottom: 1px solid #f3f4f6;
+                    text-decoration: none; color: #1e1b4b; font-size: 11px; line-height: 1.4; }
+    .history-item:last-child { border-bottom: none; }
+    .history-item:hover { color: #7c3aed; }
+    .history-item .date { color: #9ca3af; font-size: 10px; margin-left: 4px; }
+    .history-empty { color: #9ca3af; font-size: 11px; }
   </style>
 </head>
 <body>
@@ -40,7 +50,12 @@
     </div>
   </div>
 
-  <div style="margin-top:14px;padding-top:12px;border-top:1px solid #f3f4f6;text-align:center;">
+  <div class="history-section">
+    <h3>最近 Clip</h3>
+    <div class="history-list" id="history-list"></div>
+  </div>
+
+  <div style="margin-top:12px;padding-top:12px;border-top:1px solid #f3f4f6;text-align:center;">
     <a id="open-welcome" href="#" style="font-size:11px;color:#7c3aed;text-decoration:none;">⚙ 查看设置指南</a>
   </div>
 
