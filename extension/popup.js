@@ -1,9 +1,9 @@
 // extension/popup.js
 
 chrome.storage.local.get(
-  { vault_path: "~/Documents/Obsidian Vault", folder: "Raw", output: "obsidian", model: "large-v3-turbo" },
+  { obsidian_api_key: "", folder: "Raw", output: "obsidian", model: "large-v3-turbo" },
   (s) => {
-    document.getElementById("vault_path").value = s.vault_path;
+    document.getElementById("obsidian_api_key").value = s.obsidian_api_key;
     document.getElementById("folder").value = s.folder;
     document.getElementById("model").value = s.model;
     document.querySelectorAll("#output-seg button").forEach((btn) => {
@@ -16,14 +16,14 @@ function save() {
   const output =
     document.querySelector("#output-seg button.active")?.dataset.value ?? "obsidian";
   chrome.storage.local.set({
-    vault_path: document.getElementById("vault_path").value.trim(),
+    obsidian_api_key: document.getElementById("obsidian_api_key").value.trim(),
     folder: document.getElementById("folder").value.trim(),
     output,
     model: document.getElementById("model").value,
   });
 }
 
-["vault_path", "folder", "model"].forEach((id) =>
+["obsidian_api_key", "folder", "model"].forEach((id) =>
   document.getElementById(id).addEventListener("change", save)
 );
 
