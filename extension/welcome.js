@@ -33,7 +33,7 @@ const vaultInput = document.getElementById("vault_name");
 const vaultPreview = document.getElementById("vault-preview");
 
 function updateVaultPreview(val) {
-  vaultPreview.textContent = val.trim() || "My Notes";
+  vaultPreview.textContent = val.trim() || "Obsidian Vault";
 }
 
 vaultInput.addEventListener("input", () => updateVaultPreview(vaultInput.value));
