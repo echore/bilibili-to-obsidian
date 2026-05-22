@@ -7,13 +7,17 @@
 
 ## P0 — 发布前必修
 
-### [P0] Vault 名称无引导，新用户必然失败
-**模块：** UX / Popup + Clip Bar
-**问题：** 用户第一次打开 popup 看到空白输入框，不知道"Vault 名称"该填什么。填错了扩展仍显示"成功"，但笔记存到了错误位置或根本找不到。Vault 为空时，`obsidian://new` URI 不带 vault 参数，Obsidian 行为不可预期。
-**影响：** 新用户第一次使用极大概率失败，且不知道哪里出了问题。
+### [P0] 缺少 Onboarding：新用户不知道如何开始
+**模块：** UX / Onboarding
+**问题：** 用户装好扩展后没有任何引导。第一次打开 popup 看到三个空白输入框，不知道"Vault 名称"填什么、"目标文件夹"是什么意思、Obsidian 需要做什么准备。核心痛点：Vault 名称填错或留空，扩展仍显示"成功"，笔记存到错误位置，用户完全不知道发生了什么。
+**影响：** 新用户第一次使用极大概率失败。
 **改法草案：**
-- popup 在输入框下方加说明文字："填写 Obsidian 左下角显示的 Vault 名称，例如 My Notes"
-- clip bar 在 handleClip 开始时检测 vault_name 是否为空，如果为空则不继续，改为渲染提示："请先在扩展图标 → 设置里填写 Vault 名称"
+- `background.js` 监听 `chrome.runtime.onInstalled`（reason === 'install'），自动打开 `welcome.html`（新 tab）
+- `welcome.html` 只做三件事：
+  1. 一句话说明扩展用途
+  2. 带截图说明"Vault 名称在 Obsidian 左下角"，内嵌输入框让用户直接填写并保存到 `chrome.storage`
+  3. "配置完成 → 去 B 站试试" 按钮
+- `content.js` 的 `handleClip` 保留空 vault 拦截作为安全兜底（显示"请先完成初始设置"并附链接打开 welcome.html）
 **状态：** `open`
 
 ---
