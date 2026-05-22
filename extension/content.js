@@ -313,9 +313,11 @@ function renderSetupRequired() {
   _clipBar.style.borderColor = "#f59e0b";
   _clipBar.innerHTML =
     `<span style="color:#92400e;">⚙ 请先完成初始设置</span>` +
-    `<a href="${chrome.runtime.getURL("welcome.html")}" target="_blank" ` +
-    `style="padding:3px 12px;background:#f59e0b;color:white;border-radius:5px;` +
-    `font-size:11px;text-decoration:none;font-weight:600;">打开设置 →</a>`;
+    `<button id="bili-open-setup" style="padding:3px 12px;background:#f59e0b;color:white;` +
+    `border:none;border-radius:5px;font-size:11px;cursor:pointer;font-weight:600;">打开设置 →</button>`;
+  document.getElementById("bili-open-setup").addEventListener("click", () => {
+    chrome.runtime.sendMessage({ type: "OPEN_WELCOME" });
+  });
 }
 
 // ─── Clip flow ────────────────────────────────────────────────────────────────
