@@ -312,7 +312,7 @@ function renderError(message) {
   _clipBar.style.borderColor = "#ef4444";
   _clipBar.innerHTML =
     `<span style="color:#dc2626;">⚠ ${message}</span>` +
-    `<a href="https://github.com/liyachen/bili-clipper#troubleshooting" ` +
+    `<a href="https://github.com/echore/bilibili-to-obsidian#troubleshooting" ` +
     `target="_blank" style="color:#dc2626;font-size:11px;text-decoration:underline;">查看帮助</a>`;
 }
 

@@ -70,7 +70,7 @@ transcript_method: cc_subtitle
 
 ## 隐私政策
 
-[查看隐私政策](https://echore.github.io/bili-clipper/privacy-policy.html) — 扩展不收集、不上传任何用户数据，所有数据仅存储在本地。
+[查看隐私政策](https://echore.github.io/bilibili-to-obsidian/privacy-policy.html) — 扩展不收集、不上传任何用户数据，所有数据仅存储在本地。
 
 ## 参考致谢
 
