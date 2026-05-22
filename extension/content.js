@@ -232,9 +232,7 @@ async function loadVideoDataAndRenderIdle() {
     const { aid, cid, title, desc, author } = await getVideoInfo(bvid);
     const { subtitles, chapters } = await getPlayerData(aid, cid);
     if (subtitles.length === 0) {
-      // No CC subtitles — remove the bar silently, nothing to show
-      if (_clipBar) _clipBar.remove();
-      _clipBar = null;
+      renderNoSubtitles();
       return;
     }
     _videoData = { bvid, aid, cid, title, desc, author, subtitles, chapters };
@@ -243,6 +241,17 @@ async function loadVideoDataAndRenderIdle() {
     renderError("无法加载视频信息");
     console.error("[Bili Clipper]", err);
   }
+}
+
+function renderNoSubtitles() {
+  _clipBar.style.background = "#f9fafb";
+  _clipBar.style.borderColor = "#d1d5db";
+  _clipBar.innerHTML =
+    `<div style="display:flex;align-items:center;gap:8px;">` +
+    `<span>📎</span>` +
+    `<span style="color:#6b7280;">此视频无 CC 字幕，暂不支持 Clip</span>` +
+    `<span style="background:#f3f4f6;color:#9ca3af;padding:1px 7px;border-radius:4px;font-size:11px;border:1px solid #e5e7eb;">无字幕</span>` +
+    `</div>`;
 }
 
 function renderLoading() {
