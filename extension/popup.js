@@ -2,7 +2,7 @@
 
 // ─── Load + render saved settings ────────────────────────────────────────────
 chrome.storage.local.get(
-  { vault_name: "", folder: "Raw", output: "obsidian" },
+  { vault_name: "", folder: "", output: "obsidian" },
   (s) => {
     document.getElementById("vault_name").value = s.vault_name;
     document.getElementById("folder").value = s.folder;

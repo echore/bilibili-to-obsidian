@@ -114,7 +114,7 @@ async function getSettings() {
     chrome.storage.local.get(
       {
         vault_name: "",   // display name of the Obsidian vault, e.g. "Obsidian Vault"
-        folder: "Raw",
+        folder: "",
         output: "obsidian",
       },
       resolve
@@ -172,10 +172,10 @@ async function clipToObsidian(noteContent, title, settings) {
 
   if (settings.output === "clipboard") return;  // clipboard-only mode
 
-  const folder = settings.folder || "Raw";
+  const folder = (settings.folder || "").trim();
   const vaultName = settings.vault_name || "";
   const filename = sanitizeFilename(title) + ".md";
-  const notePath = folder + "/" + filename;
+  const notePath = folder ? folder + "/" + filename : filename;
 
   // Build obsidian://new URI
   // &clipboard tells Obsidian to read content from clipboard (no URL length limit)
@@ -333,9 +333,9 @@ async function handleClip() {
 
   _isProcessing = true;
   const { bvid, aid, cid, title, desc, author, subtitles, chapters } = _videoData;
-  const folder = settings.folder || "Raw";
+  const folder = (settings.folder || "").trim();
   const filename = sanitizeFilename(title) + ".md";
-  const notePath = folder + "/" + filename;
+  const notePath = folder ? folder + "/" + filename : filename;
 
   try {
     // ── CC subtitle path ─────────────────────────────────────────────────────
