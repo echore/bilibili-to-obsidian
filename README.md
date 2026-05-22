@@ -1,35 +1,35 @@
 # Bili Clipper
 
-Chrome extension that clips Bilibili video transcripts directly to Obsidian.
+Chrome 扩展，一键将 B 站视频字幕保存到 Obsidian。
 
-**Only supports videos with CC subtitles.** Extraction completes in ~2 seconds — no server, no Python, no local model required.
+**仅支持有 CC 字幕的视频。** 提取约 2 秒完成，无需服务器、无需 Python、无需本地模型。
 
-## Requirements
+## 安装要求
 
-- Chrome
+- Chrome 浏览器
 - [Obsidian](https://obsidian.md)
 
-## Install
+## 安装方法
 
-1. Open `chrome://extensions`
-2. Enable **Developer mode** (top-right toggle)
-3. Click **Load unpacked** → select the `extension/` folder from this repo
+1. 打开 `chrome://extensions`
+2. 右上角开启**开发者模式**
+3. 点击**加载已解压的扩展程序** → 选择本仓库的 `extension/` 文件夹
 
-## Configure
+## 配置
 
-Click the Bili Clipper icon in the Chrome toolbar and enter:
+点击 Chrome 工具栏中的 Bili Clipper 图标，填写：
 
-- **Vault 名称** — the folder name shown in the Obsidian title bar (e.g. `Obsidian Vault`)
-- **目标文件夹** — subfolder inside the vault where notes are saved (default: `Raw`)
-- **输出目标** — `Obsidian` (open Obsidian with the note), `剪贴板` (copy to clipboard only), or `两者` (both)
+- **Vault 名称** — Obsidian 标题栏显示的文件夹名称（例如 `Obsidian Vault`）
+- **目标文件夹** — Vault 内保存笔记的子文件夹（留空则保存到 Vault 根目录）
+- **输出目标** — `Obsidian`（自动在 Obsidian 中打开笔记）、`剪贴板`（仅复制到剪贴板）或`两者`
 
-## Usage
+## 使用方法
 
-Navigate to any Bilibili video that has CC subtitles. A **Clip bar** appears below the video title — click **Clip**. The note is written to `<folder>/<video title>.md` in your vault and Obsidian opens automatically.
+打开任意有 CC 字幕的 B 站视频，视频标题下方会出现 **Clip 栏**，点击 **Clip** 即可。笔记会保存到 `<目标文件夹>/<视频标题>.md`，并自动在 Obsidian 中打开。
 
-Videos without CC subtitles show no Clip bar.
+无 CC 字幕的视频不显示 Clip 栏。
 
-## Output format
+## 笔记格式
 
 ```markdown
 ---
@@ -56,17 +56,22 @@ transcript_method: cc_subtitle
 合并后的段落文字…
 ```
 
-Videos without chapters show the transcript as time-gap-merged paragraphs directly under `## 字幕`.
+无章节的视频，字幕按停顿自动合并为段落，直接列在 `## 字幕` 下。
 
-## Troubleshooting
+## 常见问题
 
-**Obsidian doesn't open automatically**
-Make sure Obsidian is running and the vault name in the extension popup matches exactly.
+**Obsidian 没有自动打开**
+确保 Obsidian 已在后台运行，且扩展 popup 中填写的 Vault 名称与实际完全一致。
 
-**No Clip bar on a video**
-The video does not have CC subtitles. Bili Clipper only supports CC subtitle videos.
+**视频上没有 Clip 栏**
+该视频没有 CC 字幕，Bili Clipper 目前仅支持有 CC 字幕的视频。
 
-## Credits
-- [haixiong1997/Bilibili-Obsidian-Clipper](https://github.com/haixiong1997/Bilibili-Obsidian-Clipper) — note format reference
-- [kangchainx/video-text-chrome-extension](https://github.com/kangchainx/video-text-chrome-extension) — architecture reference (MIT)
-- [IndieKKY/bilibili-subtitle](https://github.com/IndieKKY/bilibili-subtitle) — Bilibili API reference
+## 隐私政策
+
+[查看隐私政策](https://echore.github.io/bili-clipper/privacy-policy.html) — 扩展不收集、不上传任何用户数据，所有数据仅存储在本地。
+
+## 参考致谢
+
+- [haixiong1997/Bilibili-Obsidian-Clipper](https://github.com/haixiong1997/Bilibili-Obsidian-Clipper) — 笔记格式参考
+- [kangchainx/video-text-chrome-extension](https://github.com/kangchainx/video-text-chrome-extension) — 架构参考（MIT）
+- [IndieKKY/bilibili-subtitle](https://github.com/IndieKKY/bilibili-subtitle) — Bilibili API 参考
