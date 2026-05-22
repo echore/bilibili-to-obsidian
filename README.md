@@ -1,8 +1,8 @@
-# Bili Clipper
+# Bili Clipper · B 站字幕一键存 Obsidian
 
-Chrome 扩展，一键将 B 站视频字幕保存到 Obsidian。
+Chrome 扩展，点一下，B 站视频字幕自动进 Obsidian，2 秒完成。
 
-**仅支持有 CC 字幕的视频。** 提取约 2 秒完成，无需服务器、无需 Python、无需本地模型。
+无需服务器，无需 Python，无需本地模型，装完即用。仅支持有 CC 字幕的视频。
 
 ## 安装要求
 
@@ -61,9 +61,9 @@ transcript_method: cc_subtitle
 ## 常见问题
 
 **Obsidian 没有自动打开**
-确保 Obsidian 已在后台运行，且扩展 popup 中填写的 Vault 名称与实际完全一致。
+检查扩展 popup 中的 Vault 名称是否与 Obsidian 标题栏显示的完全一致（大小写、空格都要匹配）。
 
-**视频上没有 Clip 栏**
+**Clip 栏显示为灰色**
 该视频没有 CC 字幕，Bili Clipper 目前仅支持有 CC 字幕的视频。
 
 ## 隐私政策
