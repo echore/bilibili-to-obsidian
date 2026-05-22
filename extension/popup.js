@@ -13,6 +13,8 @@ chrome.storage.local.get(
 );
 
 // ─── Save on any change ───────────────────────────────────────────────────────
+let _saveHintTimer = null;
+
 function save() {
   const output =
     document.querySelector("#output-seg button.active")?.dataset.value ?? "obsidian";
@@ -21,6 +23,10 @@ function save() {
     folder: document.getElementById("folder").value.trim(),
     output,
   });
+  const hint = document.getElementById("save-hint");
+  hint.style.opacity = "1";
+  clearTimeout(_saveHintTimer);
+  _saveHintTimer = setTimeout(() => { hint.style.opacity = "0"; }, 1500);
 }
 
 ["vault_name", "folder"].forEach((id) =>
