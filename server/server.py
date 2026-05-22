@@ -1,4 +1,3 @@
-# server/server.py  — replace entire file
 import json
 from pathlib import Path
 from fastapi import FastAPI
