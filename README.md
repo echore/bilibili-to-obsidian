@@ -71,6 +71,27 @@ transcript_method: cc_subtitle
 
 无章节的视频，字幕按停顿自动合并为段落，直接列在 `## 字幕` 下。
 
+## 推荐学习工作流（AI 增强版）
+
+Bili Clipper 保存的是原始字幕，配合以下工作流可以把它变成真正吸收的知识。
+
+### 一次性配置
+
+1. 在 Obsidian 中安装 [Claudian](https://github.com/YishenTu/claudian) 插件
+2. 把 [LLM Wiki 配置文档](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) 发给 Claude Code 或 Codex，让 AI 自动完成配置
+
+### 日常使用
+
+**1. Clip**　用 Bili Clipper（B 站）或 [Obsidian Web Clipper](https://obsidian.md/clipper)（YouTube、X 等其他平台）将内容保存到 Obsidian `Raw` 文件夹。官方 Web Clipper 支持绝大多数平台，但不支持 B 站——这正是 Bili Clipper 存在的原因。
+
+**2. Ingest**　在 Obsidian 中打开 Claudian，输入 `ingest`，AI 自动将原始字幕整理为结构清晰的笔记，存入 `Wiki` 文件夹。只需 Claude 订阅，不消耗 API Key。
+
+**3. 深化**　针对不理解的部分继续追问 AI，让 AI 将问答总结后追加到笔记，笔记随理解一起生长。
+
+**4. 费曼复习**　让 AI 基于最新笔记用费曼学习法提问，检验真正理解了多少。
+
+`Raw`（源字幕）→ `Wiki`（AI 整理）→ 追问深化 → 费曼检验，形成完整学习闭环。
+
 ## 常见问题
 
 **Obsidian 没有自动打开**
