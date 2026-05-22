@@ -257,6 +257,49 @@ Commit: `3c0d41e` — feat(extension): Clip bar UI + full state machine
 
 ---
 
+## 笔记格式升级（2026-05-22）
+
+**背景：** 对比参考项目 [haixiong1997/Bilibili-Obsidian-Clipper](https://github.com/haixiong1997/Bilibili-Obsidian-Clipper)，发现我们的笔记缺少视频 embed、简介、章节结构。借鉴其思路并在段落合并上做了改进（参考项目章节内是逐行平铺，我们合并成段落）。
+
+**改动内容：**
+
+| 模块 | 改动 |
+|------|------|
+| `extension/content.js` | `getVideoInfo` 新增 `desc`/`author`；`getSubtitleList` → `getPlayerData`（同时返回章节）；`fetchSubtitleText` → `fetchSubtitleItems`（返回原始条目）；新增 `formatChapterTimestamp` / `mergeItemsIntoParagraphs` / `buildSubtitleSection` / `buildEmbedIframe`；`formatNote` 升级为含 iframe + 简介 + 字幕结构 |
+| `server/server.py` | `Config` 新增 `aid` / `cid` / `author` / `desc` 可选字段 |
+| `server/writer.py` | 新增 `_build_embed_iframe`；`format_note` 输出 iframe + 条件性 `## 简介` + 固定 `## 字幕` |
+| `tests/test_writer.py` | 从 5 个测试扩展到 12 个 |
+| `README.md` | 移除 Local REST API 依赖；更新笔记格式示例；安装步骤从 4 步减为 3 步 |
+
+**新笔记结构：**
+```
+---frontmatter（含 author）---
+<iframe B站播放器>
+
+## 简介（有简介才出现）
+视频描述
+
+## 字幕
+### 章节名 `0:00`（有章节才出现）
+合并段落...
+```
+
+**关键修复（代码审查发现）：**
+- `buildSubtitleSection`：第一章节之前的字幕条目之前被丢弃 → 加 pre-chapter 收集逻辑
+- `formatNote`：无简介时 `## 字幕` 标题缺失，导致章节 `###` 没有父级标题 → `## 字幕` 改为始终输出
+- `writer.py`：author 为空时仍写 `author: ""` 到 frontmatter → 改为空时不写
+
+**提交列表：**
+- `c19bbb5` — feat(extension): chapter-structured subtitles, iframe, author, desc in note
+- `591cfc5` — fix(extension): include pre-chapter items; always emit ## 字幕 heading
+- `50ba0c2` — feat(server): add iframe, author, desc to note format; update Config model
+- `c117dd3` — fix(server): omit author from frontmatter when empty; strengthen iframe test
+- `8d5cd59` — docs(readme): update for new note format, remove Local REST API requirement
+
+**测试结果：** 12 passed ✅ | E2E 用户验证 ✅
+
+---
+
 ## 参考 Repo 分析（2026-05-21）
 
 读取了两个参考 repo 的完整源码，发现以下关键信息：
@@ -325,4 +368,4 @@ content → background 通过 `chrome.runtime.sendMessage` 传递类型化消息
 
 ---
 
-*最后更新：2026-05-21 · 网络分层重构 + vault_path 校验完成，E2E 验证待重新测试。*
+*最后更新：2026-05-22 · 笔记格式升级完成（iframe + 简介 + 章节结构），E2E 验证通过。*
