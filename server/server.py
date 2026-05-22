@@ -1,13 +1,14 @@
+# server/server.py  — replace entire file
+import json
+from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
-from urllib.parse import quote
-import httpx
 import uvicorn
 
 from transcriber import download_audio, transcribe
-from writer import write_note
+from writer import format_note
 
 app = FastAPI(title="Bili Clipper Server")
 
@@ -20,8 +21,6 @@ app.add_middleware(
 
 
 class Config(BaseModel):
-    obsidian_url: str = "https://127.0.0.1:27124"
-    obsidian_api_key: str = ""
     folder: str = "Raw"
     output: str = "obsidian"
     model: str = "large-v3-turbo"
@@ -31,14 +30,8 @@ class Config(BaseModel):
 class ClipRequest(BaseModel):
     bvid: str
     title: str
-    transcript: Optional[str] = None
+    transcript: Optional[str] = None  # if provided, skip transcription
     config: Config = Config()
-
-
-class OpenRequest(BaseModel):
-    path: str
-    obsidian_url: str = "https://127.0.0.1:27124"
-    obsidian_api_key: str = ""
 
 
 @app.get("/health")
@@ -46,42 +39,54 @@ def health():
     return {"status": "ok", "model": "mlx-community/whisper-large-v3-turbo"}
 
 
-@app.post("/open")
-async def open_note(req: OpenRequest):
-    """Proxy open-in-Obsidian so the browser never makes direct SSL calls."""
-    url = req.obsidian_url.rstrip("/")
-    headers = {"Authorization": f"Bearer {req.obsidian_api_key}"}
+@app.get("/vaults")
+def list_vaults():
+    """Return Obsidian vault names from Obsidian's own config file.
+    Used by the extension popup for auto-detection — no manual vault path entry needed.
+    """
+    config_path = (
+        Path.home() / "Library" / "Application Support" / "obsidian" / "obsidian.json"
+    )
+    if not config_path.exists():
+        return {"vaults": []}
     try:
-        async with httpx.AsyncClient(verify=False) as client:
-            await client.post(
-                f"{url}/open/{quote(req.path, safe='/')}",
-                headers=headers,
-            )
-        return {"success": True}
-    except Exception as e:
-        return {"success": False, "error": str(e)}
+        data = json.loads(config_path.read_text(encoding="utf-8"))
+        vaults = [
+            {"name": Path(v["path"]).name, "path": v["path"]}
+            for v in data.get("vaults", {}).values()
+            if "path" in v
+        ]
+        return {"vaults": vaults}
+    except Exception:
+        return {"vaults": []}
 
 
 @app.post("/clip")
 async def clip(req: ClipRequest):
+    """Transcribe (if needed) and format a note.
+
+    If transcript is provided (CC subtitle fast path): just format and return.
+    If no transcript: download audio via yt-dlp and transcribe with mlx-whisper.
+
+    Returns the formatted markdown note content — the extension writes it to Obsidian
+    via clipboard + obsidian:// URI (no file I/O on the server side).
+    """
     try:
+        config = req.config.model_dump()
+        config["bvid"] = req.bvid  # ensure bvid is in config for source URL
+
         if req.transcript:
-            path = await write_note(
-                req.title,
-                req.transcript,
-                req.config.model_dump(),
-                method="cc_subtitle",
-            )
+            note = format_note(req.title, req.transcript, config, method="cc_subtitle")
         else:
             audio_path = await download_audio(req.bvid)
             transcript_text = await transcribe(audio_path, req.config.model)
-            path = await write_note(
+            note = format_note(
                 req.title,
                 transcript_text,
-                req.config.model_dump(),
+                config,
                 method=f"whisper_{req.config.model}",
             )
-        return {"success": True, "path": path}
+        return {"success": True, "note": note}
     except Exception as e:
         return {"success": False, "error": str(e)}
 
