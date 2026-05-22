@@ -15,15 +15,6 @@
 
 ---
 
-### [P1] renderError 的 GitHub 帮助链接需要验证
-**模块：** 代码质量 / content.js
-**问题：** 错误状态显示的链接 `https://github.com/liyachen/bili-clipper#troubleshooting` 需要确认 README 里有对应锚点，发布后链接必须有效。
-**影响：** 发布后如果链接 404，出错时用户找不到帮助。
-**改法草案：** 确认 README troubleshooting 章节存在且锚点正确；或先改链接为 repo 根路径。
-**状态：** `open`
-
----
-
 ### [P1] Obsidian 是否真正打开无反馈
 **模块：** UX / Clip Bar
 **问题：** 扩展调用 `obsidian://new` URI 后无法感知 Obsidian 是否响应。如果 Obsidian 未安装、未运行，或 URI 被系统忽略，扩展仍然显示"已保存到 Obsidian ✓"——成功提示是乐观的，实际可能什么都没发生。
@@ -114,6 +105,7 @@
 | [P1] 默认文件夹 "Raw" 对新用户无意义 | 改默认值为空字符串 |
 | [P1] 成功提示显示技术路径 | 改为"已保存到 Obsidian" |
 | [P1] 打开设置按钮被 Chrome 拦截 | 改用 button + sendMessage 绕过内容脚本限制 |
+| [P1] renderError GitHub 链接需验证 | README 第 61 行已有 `## Troubleshooting`，锚点有效 |
 
 ---
 
