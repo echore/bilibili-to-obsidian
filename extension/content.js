@@ -114,10 +114,11 @@ async function clipToObsidian(noteContent, title, settings) {
   // &clipboard tells Obsidian to read content from clipboard (no URL length limit)
   const params = new URLSearchParams();
   if (vaultName) params.set("vault", vaultName);
-  params.set("name", notePath);
+  params.set("file", notePath);
 
   const link = document.createElement("a");
-  link.href = "obsidian://new?" + params.toString() + "&clipboard";
+  // Obsidian URI handler requires %20 for spaces, not + (URLSearchParams default)
+  link.href = "obsidian://new?" + params.toString().replace(/\+/g, "%20") + "&clipboard";
   link.click();
 }
 
