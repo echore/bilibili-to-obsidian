@@ -173,7 +173,7 @@ async function clipToObsidian(noteContent, title, settings) {
 
   if (settings.output === "clipboard") return;  // clipboard-only mode
 
-  const folder = (settings.folder || "").trim();
+  const folder = (settings.folder || "").trim().replace(/^\/+|\/+$/g, "");
   const vaultName = settings.vault_name || "";
   const filename = sanitizeFilename(title) + ".md";
   const notePath = folder ? folder + "/" + filename : filename;
@@ -343,7 +343,7 @@ async function handleClip() {
 
   _isProcessing = true;
   const { bvid, aid, cid, title, desc, author, subtitles, chapters } = _videoData;
-  const folder = (settings.folder || "").trim();
+  const folder = (settings.folder || "").trim().replace(/^\/+|\/+$/g, "");
   const filename = sanitizeFilename(title) + ".md";
   const notePath = folder ? folder + "/" + filename : filename;
 
@@ -358,7 +358,7 @@ async function handleClip() {
     if (settings.output === "clipboard") {
       renderSuccess("已复制到剪贴板");
     } else {
-      renderSuccess("已保存到 Obsidian", "如未自动打开，请先启动 Obsidian 再重试");
+      renderSuccess("已保存到 Obsidian", "如未自动打开，请启动 Obsidian 或检查 Vault 名称是否正确");
     }
     saveClipHistory({ title, url: `https://www.bilibili.com/video/${bvid}` });
   } catch (err) {
