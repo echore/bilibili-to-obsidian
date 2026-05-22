@@ -11,7 +11,7 @@ Chrome extension that clips Bilibili video transcripts directly to Obsidian.
 - macOS (Apple Silicon M1/M2/M3 recommended; Intel works but slower)
 - Python 3.11+
 - Chrome
-- [Obsidian](https://obsidian.md) with the [Local REST API](https://github.com/coddingtonbear/obsidian-local-rest-api) community plugin
+- [Obsidian](https://obsidian.md)
 
 ## Install
 
@@ -22,39 +22,49 @@ curl -sSL https://raw.githubusercontent.com/YOUR_HANDLE/bili-clipper/main/instal
 Installs the Python server as a background service that auto-starts with your Mac.
 First run downloads the Whisper `large-v3-turbo` model (~1.6 GB).
 
-**Step 2 — Obsidian Local REST API plugin:**
-1. In Obsidian → Settings → Community Plugins → Browse → search **Local REST API** → Install → Enable
-2. Go to the plugin settings and copy your **API Key**
-
-**Step 3 — Chrome extension:**
+**Step 2 — Chrome extension:**
 1. Open `chrome://extensions`
 2. Enable **Developer mode** (top-right toggle)
 3. Click **Load unpacked** → select the `extension/` folder from this repo
 
-**Step 4 — Configure:**
-Click the Bili Clipper icon in Chrome toolbar → paste your Obsidian API Key.
+**Step 3 — Configure:**
+Click the Bili Clipper icon in Chrome toolbar → enter your **Obsidian vault name** (the folder name shown in the Obsidian title bar).
 
 ## Usage
 
 Navigate to any Bilibili video. A **Clip bar** appears below the title. Click **Clip**.
 
-- The transcript is saved to `Raw/[video title].md` in your vault
-- Chrome shows an **"Open Obsidian?"** dialog — click it to jump directly to the new note
+- The note is written to `Raw/[video title].md` in your vault and Obsidian opens automatically
+- Videos with CC subtitles complete in ~2 seconds; Whisper transcription takes ~2 minutes
 
 ## Output format
 
 ```markdown
 ---
-title: 如何快速学习陌生领域
+title: "如何快速学习陌生领域"
 source: https://www.bilibili.com/video/BVxxx
 platform: bilibili
-date: 2026-05-20
+author: "UP主名字"
+date: 2026-05-22
 tags: [transcript, bilibili]
 transcript_method: cc_subtitle
 ---
 
-[transcript text]
+<iframe src="https://player.bilibili.com/player.html?bvid=BVxxx&..." ...></iframe>
+
+## 简介
+视频描述文字（仅在有简介时出现）
+
+## 字幕
+
+### 章节名 `0:00`
+合并后的段落文字…
+
+### 章节名 `5:30`
+合并后的段落文字…
 ```
+
+Videos without chapters show the transcript as time-gap-merged paragraphs directly under `## 字幕`.
 
 ## Troubleshooting
 
@@ -71,8 +81,8 @@ launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.bili-clipper.server.pl
 launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.bili-clipper.server.plist
 ```
 
-**"Open Obsidian?" dialog doesn't appear**
-Make sure the Obsidian Local REST API plugin is enabled and Obsidian is running.
+**Obsidian doesn't open automatically**
+Make sure Obsidian is running and the vault name in the extension popup matches exactly.
 
 **Whisper too slow / out of memory**
 Open extension popup → change ASR model to `medium` or `base`.
@@ -83,6 +93,7 @@ bash uninstall.sh
 ```
 
 ## Credits
+- [haixiong1997/Bilibili-Obsidian-Clipper](https://github.com/haixiong1997/Bilibili-Obsidian-Clipper) — note format reference
 - [kangchainx/video-text-chrome-extension](https://github.com/kangchainx/video-text-chrome-extension) — architecture reference (MIT)
 - [IndieKKY/bilibili-subtitle](https://github.com/IndieKKY/bilibili-subtitle) — Bilibili API reference
-- [yt-dlp](https://github.com/yt-dlp/yt-dlp), [mlx-whisper](https://github.com/ml-explore/mlx-examples/tree/main/whisper), [coddingtonbear/obsidian-local-rest-api](https://github.com/coddingtonbear/obsidian-local-rest-api)
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp), [mlx-whisper](https://github.com/ml-explore/mlx-examples/tree/main/whisper)
