@@ -1,5 +1,7 @@
 # Bili Clipper · B 站字幕一键存 Obsidian
 
+[![GitHub Release](https://img.shields.io/github/v/release/echore/bilibili-to-obsidian)](https://github.com/echore/bilibili-to-obsidian/releases/latest)
+
 Chrome 扩展，点一下，B 站视频字幕自动进 Obsidian，2 秒完成。
 
 **不需要配置任何东西。** 无需安装 Obsidian 插件，无需 Local REST API，无需服务器，装完即用。
