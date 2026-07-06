@@ -15,11 +15,11 @@ Chrome 扩展，点一下，B 站视频字幕自动进 Obsidian 或 Notion，2 �
 
 ## 安装方法
 
-**方式一：Chrome Web Store（审核中，即将上线）**
+**方式一：Chrome Web Store（推荐）**
 
-> 上线后可直接从商店一键安装。
+> [点击安装](https://chromewebstore.google.com/detail/gbfmnhlfkapbddhldhmpegicppfebbdh) — 一键从商店安装。
 
-**方式二：手动安装（当前可用）**
+**方式二：手动安装（备用）**
 
 1. 下载 [bili-clipper.zip](https://github.com/echore/bili-clipper/releases/latest/download/bili-clipper.zip) 并解压
 2. 点击浏览器右上角的扩展图标（拼图形状），在弹出菜单底部点击**管理扩展程序**
